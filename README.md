@@ -102,6 +102,22 @@ List of renameable CSS selectors with their default values:
 		}
 	});
 
+**path**: Accepts a object, holds all of the paths for images. If full/thumb is set to false, it falls back to root path.
+
+	$('#element').blurbGallery({
+		path: {
+			full: false,
+			root: 'img/',
+			thumbs: 'img/thumbs/'
+		}
+	});
+
+List of editable paths:
+
+	- full: false,
+	- root: 'img/'
+	- thumbs: 'img/thumbs/'
+
 **selected**: Accepts a object, contains the starting category and item loaded on the inital load of the gallery. Defaults to false.
 
 	$('#element').blurbGallery({

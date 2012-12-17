@@ -124,14 +124,11 @@
 ----------------------------------------------- */
 .bg-thumbs{
 	border-top: 1px solid #CCC;
+	display: table;
 	float: left;
 	margin: 20px 0 0 0;
 	padding: 20px 0 0 0;
 	width: 300px;
-}
-
-.bg-thumbs img{
-	outline: none;
 }
 
 .bg-thumbs a.bg-active-thumb{
@@ -139,9 +136,16 @@
 	filter: alpha(opacity=50);
 }
 
+.bg-thumbs a{
+	display: inline-block;
+	margin: 0 5px 10px 5px;
+	width: 90px;
+}
+
 .bg-thumbs img{
 	border: 2px solid #FFF;
-	margin: 0 5px 10px 5px;
+	outline: none;
+	width: 100%;
 }
 
 .bg-thumbs img:hover{

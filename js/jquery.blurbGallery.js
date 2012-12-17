@@ -1,7 +1,7 @@
 /*!
  * jQuery blurbGallery Plugin
  * Author: Carl Dawson
- * Version: 1.0
+ * Version: 1.01
  */
 
 var blurbGallery = {
@@ -75,6 +75,12 @@ var blurbGallery = {
 		pages: {
 			per: 3,
 			show: true
+		},
+
+		path: {
+			full: false,
+			root: 'img/',
+			thumbs: 'img/thumbs/'
 		},
 
 		selected: {
@@ -755,18 +761,30 @@ var blurbGallery = {
 		var that = this,
 			a,
 			el,
-			src;
+			src,
+			href;
 
 		//empty container
 		image.empty();
 
+		//if full image path exists
+		if(that.config.path.full){
+
+			href = that.config.path.full + that.selected.item.img;
+		}
+		else{
+
+			href = that.config.path.root + that.selected.item.img;
+		}
+
+		//create anchor
 		a = $('<a/>', {
 
-			'href': 'img/full/' + that.selected.item.img
+			'href': href
 		}).appendTo(image);
 
 		//create img source
-		src = 'img/' + that.selected.item.img;
+		src = that.config.path.root + that.selected.item.img;
 
 		//create img and append to a
 		el = $('<img/>',{
@@ -781,6 +799,7 @@ var blurbGallery = {
 
 		var that = this,
 			srcs = [],
+			src,
 			a,
 			img,
 			i;
@@ -804,17 +823,27 @@ var blurbGallery = {
 				a.addClass(that.config.cssSelectors.activeThumb);
 			}
 
+			//if thumbs path exists
+			if(that.config.path.thumbs){
+
+				src = that.config.path.thumbs + that.selected.cat.item[i].img;
+			}
+			else{
+
+				src = that.config.path.root + that.selected.cat.item[i].img;
+			}
+
 			//create img
 			img = $('<img/>').attr({
 
-				'src': 'img/thumbs/' + that.selected.cat.item[i].img
+				'src': src
 			});
 
 			//append img to a, append a to thumbs
 			a.append(img).appendTo(thumbs);
 
 			//push srcs array
-			srcs.push('img/thumbs/' + that.selected.cat.item[i].img);
+			srcs.push(src);
 		}
 
 		return srcs;
