@@ -127,12 +127,12 @@ List of editable paths:
 		}
 	});
 
-**speed**: Accepts number, controls the speed of the fade transitions in milliseconds. Defaults to 300.
+**speed**: Accepts an object, controls the speed of the fade and load transitions in milliseconds.
 
 	$('#element').blurbGallery({
-		speed: 300
+		load: 300,
+		transition: 150
 	});
-
 
 ### Build Contents:
 ----
