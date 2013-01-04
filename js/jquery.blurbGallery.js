@@ -983,7 +983,7 @@ var blurbGallery = {
 
 							if(selectedImg === img){
 
-								item = currentCat[i];
+								item = currentCat.item[i];
 
 								cat = currentCat;
 							}
