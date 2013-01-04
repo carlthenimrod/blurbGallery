@@ -25,13 +25,6 @@ var blurbGallery = {
 
 			//create events
 			that.events();
-
-			//if callback is set
-			if(that.config.callback){
-
-				//call callback
-				that.config.callback();
-			}
 		},
 		function(){
 
