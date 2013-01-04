@@ -6,7 +6,7 @@ blurbGallery dynamically generates a image gallery based on a JSON file that cat
 
 ### Release info:
 
-The current release is version 1.0. This is the inital release and more features and updates are planned.
+The current release is version 1.02. This is the inital release and more features and updates are planned.
 
 
 ### Examples:

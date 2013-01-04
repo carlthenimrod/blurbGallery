@@ -1,7 +1,7 @@
 /*!
  * jQuery blurbGallery Plugin
  * Author: Carl Dawson
- * Version: 1.01
+ * Version: 1.02
  */
 
 var blurbGallery = {
@@ -25,6 +25,13 @@ var blurbGallery = {
 
 			//create events
 			that.events();
+
+			//if callback is set
+			if(that.config.callback){
+
+				//call callback
+				that.config.callback();
+			}
 		},
 		function(){
 
@@ -40,7 +47,7 @@ var blurbGallery = {
 		ajax: {
 			cache: false,
 			dataType: 'json',
-			dataUrl: 'json/jquery.blurbGallery.json'
+			dataUrl: 'json/jquery.items.json'
 		},
 
 		callback: function(){},
@@ -85,7 +92,7 @@ var blurbGallery = {
 
 		selected: {
 			cat: false,
-			item: false
+			img: false
 		},
 
 		speed: 300
@@ -391,7 +398,7 @@ var blurbGallery = {
 
 			var selectMenu,
 				selectNav,
-				cats = that.data.blurbGallery,
+				cats = that.data.items,
 				a,
 				i,
 				l;
@@ -950,14 +957,41 @@ var blurbGallery = {
 
 		(function(){
 
-			var blurbGallery = that.data.blurbGallery,
+			var blurbGallery = that.data.items,
 				id,
 				i,
 				l,
-				selected = $('#bg-selected-cat').attr('value');
+				selectedImg = $('#bg-selected-img').attr('value'),
+				selectedCat = $('#bg-selected-cat').attr('value');
 
+			if(selectedImg && get){
+
+				//for each cat
+				for(i = 0, l = blurbGallery.length; i < l; ++i){
+
+					var currentCat = blurbGallery[i].item;
+
+					(function(){
+
+						var i,
+							l,
+							img;
+
+						for(i = 0, l = currentCat.length; i < l; ++i){
+
+							img = that.utils.formatText(currentCat[i].title);
+
+							if(selectedImg === img){
+
+								item = currentCat[i];
+							}
+						}
+
+					})();
+				}
+			}
 			//if selected cat, and get is set
-			if(selected && get){
+			else if(selectedCat && get){
 
 				//for each cat
 				for(i = 0, l = blurbGallery.length; i < l; ++i){
@@ -966,7 +1000,7 @@ var blurbGallery = {
 					id = that.utils.formatText(blurbGallery[i].id);
 
 					//if id equals cat in config
-					if(id === selected){
+					if(id === selectedCat){
 
 						//set cat to cat
 						cat = blurbGallery[i];
@@ -996,7 +1030,7 @@ var blurbGallery = {
 
 			var i;
 
-			if(that.config.selected.item){
+			if(that.config.selected.item && !item){
 
 				//for each item
 				for(i in cat.item){
@@ -1061,15 +1095,17 @@ var blurbGallery = {
 
 	utils: {
 
-		formatText: function(text){
+		formatText: function(str){
 
-			//convert to lower case
-			text = text.toLowerCase();
+			//create string for id, make lowercase
+			str = str.toLowerCase();
 
-			//replace non-alpha-numeric characters with underscores
-			text = text.replace(/[^A-Za-z0-9]/g, '_');
+			//replace spaces with underscore, remove other misc characters
+			str = str.replace(/ /g, '_');
+			str = str.replace(/&/g, 'and');
+			str = str.replace(/[^a-z0-9_]/g, '');
 
-			return text;
+			return str;
 		},
 
 		preload: function(srcs) {
