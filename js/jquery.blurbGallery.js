@@ -969,7 +969,7 @@ var blurbGallery = {
 				//for each cat
 				for(i = 0, l = blurbGallery.length; i < l; ++i){
 
-					var currentCat = blurbGallery[i].item;
+					var currentCat = blurbGallery[i];
 
 					(function(){
 
@@ -977,13 +977,15 @@ var blurbGallery = {
 							l,
 							img;
 
-						for(i = 0, l = currentCat.length; i < l; ++i){
+						for(i = 0, l = currentCat.item.length; i < l; ++i){
 
-							img = that.utils.formatText(currentCat[i].title);
+							img = that.utils.formatText(currentCat.item[i].title);
 
 							if(selectedImg === img){
 
 								item = currentCat[i];
+
+								cat = currentCat;
 							}
 						}
 
