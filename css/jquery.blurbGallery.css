@@ -110,14 +110,17 @@
 	margin: 10px 0 0 0;
 }
 
-.bg-loading, .bg-loading-img{
+.bg-loading{
 	display: none;
 	padding: 200px 0 300px 0;
 	text-align: center;
 }
 
-.bg-loading img, .bg-loading-img img{
-	display: inline;
+.bg-loading-img{
+	display: none;
+	margin: 200px 0 0 0;
+	padding: 5px;
+	text-align: center;
 }
 
 /* =Thumbs
