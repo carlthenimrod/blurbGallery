@@ -232,6 +232,9 @@ var blurbGallery = {
 			href,
 			thumbs;
 
+		//hide image container
+		$('.' + that.config.classImgCtn).css('opacity', 0);
+
 		//store thumbs
 		thumbs = $('.' + that.config.classThumbs).find('a');
 
@@ -265,7 +268,7 @@ var blurbGallery = {
 			if(that.config.loading) loading.hide();
 
 			//fade in gallery
-			$('.' + that.config.classImgCtn).css('opacity', 0).animate({'opacity': 1}, that.config.speed);
+			$('.' + that.config.classImgCtn).animate({'opacity': 1}, that.config.speed);
 
 			//callback function
 			that.config.callback();			
