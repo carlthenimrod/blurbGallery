@@ -1,7 +1,7 @@
 /*!
  * jQuery blurbGallery Plugin
  * Author: Carl Dawson
- * Version: 1.02
+ * Version: 1.03
  */
 
 var blurbGallery = {
@@ -37,57 +37,41 @@ var blurbGallery = {
 
 	defaults: {
 
-		ajax: {
-			cache: false,
-			dataType: 'json',
-			dataUrl: 'json/jquery.items.json'
-		},
-
+		ajaxCache: false,
+		ajaxDataType: 'json',
+		ajaxDataUrl: 'json/jquery.items.json',
 		callback: function(){},
-
-		cssSelectors: {
-			activePage: 'bg-active-page',
-			activeThumb: 'bg-active-thumb',
-			category: 'bg-category',
-			description: 'bg-description',
-			enlarge: 'bg-enlarge',
-			gallery: 'bg-gallery',
-			img: 'bg-img',
-			imgCtn: 'bg-img-ctn',
-			info: 'bg-info',
-			loading: 'bg-loading',
-			loadingImg: 'bg-loading-img',
-			nextLink: 'bg-next-link',
-			pageLink: 'bg-page-link',
-			pages: 'bg-page-navigation',
-			previousLink: 'bg-previous-link',
-			selectMenu: 'bg-select-menu',
-			selectNav: 'bg-select-nav',
-			thumbs: 'bg-thumbs',
-			title: 'bg-title',
-			wrapper: 'bg-wrapper'
-		},
-
+		classActivePage: 'bg-active-page',
+		classActiveThumb: 'bg-active-thumb',
+		classCategory: 'bg-category',
+		classDescription: 'bg-description',
+		classEnlarge: 'bg-enlarge',
+		classGallery: 'bg-gallery',
+		classImg: 'bg-img',
+		classImgCtn: 'bg-img-ctn',
+		classInfo: 'bg-info',
+		classLoading: 'bg-loading',
+		classLoadingImg: 'bg-loading-img',
+		classMoreLink: 'bg-more-link',
+		classNextLink: 'bg-next-link',
+		classPageLink: 'bg-page-link',
+		classPages: 'bg-page-navigation',
+		classPreviousLink: 'bg-previous-link',
+		classSelectMenu: 'bg-select-menu',
+		classSelectNav: 'bg-select-nav',
+		classThumbs: 'bg-thumbs',
+		classTitle: 'bg-title',
+		classWrapper: 'bg-wrapper',
 		html5: true,
-
 		loading: 'img/bg-loading.gif',
-
-		pages: {
-			per: 3,
-			show: true
-		},
-
-		path: {
-			full: false,
-			root: 'img/',
-			thumbs: 'img/thumbs/'
-		},
-
-		selected: {
-			cat: false,
-			img: false
-		},
-
+		pageMax: 3,
+		pagePer: 3,
+		pageShow: true,
+		pathFull: false,
+		pathRoot: 'img/',
+		pathThumbs: 'img/thumbs/',
+		selectedCat: false,
+		selectedImg: false,
 		speed: 300
 	},
 
@@ -100,9 +84,9 @@ var blurbGallery = {
 		$.ajax({
 
 			//ajax config
-			cache: that.config.ajax.cache,
-			dataType: that.config.ajax.dataType,
-			url: that.config.ajax.dataUrl
+			cache: that.config.ajaxCache,
+			dataType: that.config.ajaxDataType,
+			url: that.config.ajaxDataUrl
 		})
 		.then(function(data){
 
@@ -130,7 +114,7 @@ var blurbGallery = {
 		var that = this;
 
 		//on nav click
-		that.$elem.on('click', '.' + that.config.cssSelectors.selectNav + ' a', function(e){
+		that.$elem.on('click', '.' + that.config.classSelectNav + ' a', function(e){
 
 			//change cat
 			that.changeCategory.call(that, $(this).html());
@@ -140,7 +124,7 @@ var blurbGallery = {
 		});
 
 		//on thumb click
-		that.$elem.on('click', '.' + that.config.cssSelectors.thumbs + ' a', function(e){
+		that.$elem.on('click', '.' + that.config.classThumbs + ' a', function(e){
 
 			//change cat
 			that.changeItem.call(that, $(this));
@@ -150,7 +134,7 @@ var blurbGallery = {
 		});
 
 		//on previous click
-		that.$elem.on('click', '.' + that.config.cssSelectors.previousLink, function(e){
+		that.$elem.on('click', '.' + that.config.classPreviousLink, function(e){
 
 			//change page
 			that.changePage.call(that, $(this), 'previous');			
@@ -160,7 +144,7 @@ var blurbGallery = {
 		});	
 
 		//on page click
-		that.$elem.on('click', '.' + that.config.cssSelectors.pageLink, function(e){
+		that.$elem.on('click', '.' + that.config.classPageLink, function(e){
 
 			//change cat
 			that.changePage.call(that, $(this));			
@@ -170,7 +154,7 @@ var blurbGallery = {
 		});	
 
 		//on next click
-		that.$elem.on('click', '.' + that.config.cssSelectors.nextLink, function(e){
+		that.$elem.on('click', '.' + that.config.classNextLink, function(e){
 
 			//change cat
 			that.changePage.call(that, $(this), 'next');			
@@ -188,41 +172,41 @@ var blurbGallery = {
 			src;
 
 		//hide gallery
-		$('.' + that.config.cssSelectors.imgCtn).hide();
-		$('.' + that.config.cssSelectors.info).hide();
+		$('.' + that.config.classImgCtn).hide();
+		$('.' + that.config.classInfo).hide();
 
 		//if loading image is set, show loading
-		if(that.config.loading) $('.' + that.config.cssSelectors.loading).show();
+		if(that.config.loading) $('.' + that.config.classLoading).show();
 
 		//set selected cat in config
-		that.config.selected.cat = id;
+		that.config.selectedCat = id;
 
 		//find selected
 		that.selected = that.findSelected();
 
 		//render title
-		that.renderTitle( $('.' + that.config.cssSelectors.title) );
+		that.renderTitle( $('.' + that.config.classTitle) );
 
 		//render cat
-		that.renderCategory( $('.' + that.config.cssSelectors.category) );
+		that.renderCategory( $('.' + that.config.classCategory) );
 
 		//render description
-		that.renderDescription( $('.' + that.config.cssSelectors.description) );
+		that.renderDescription( $('.' + that.config.classDescription) );
 
 		//render image
-		src = that.renderImage( $('.' + that.config.cssSelectors.img) );
+		src = that.renderImage( $('.' + that.config.classImg) );
 
 		//render thumbs
-		srcs = that.renderThumbs( $('.' + that.config.cssSelectors.thumbs) );
+		srcs = that.renderThumbs( $('.' + that.config.classThumbs) );
 
 		$.when(that.utils.preload(src), that.utils.preload(src)).then(function(){
 
 			//if loading image is set, hide loading
-			if(that.config.loading) $('.' + that.config.cssSelectors.loading).hide();
+			if(that.config.loading) $('.' + that.config.classLoading).hide();
 			
 			//fade in gallery
-			$('.' + that.config.cssSelectors.imgCtn).fadeIn(that.config.speed);
-			$('.' + that.config.cssSelectors.info).fadeIn(that.config.speed);
+			$('.' + that.config.classImgCtn).fadeIn(that.config.speed);
+			$('.' + that.config.classInfo).fadeIn(that.config.speed);
 
 			//callback function
 			that.config.callback();
@@ -230,32 +214,32 @@ var blurbGallery = {
 
 		//set pages
 		that.pages = {
-			ctn: $('.' + that.config.cssSelectors.pages),
+			ctn: $('.' + that.config.classPages),
 			current: 0,
 			items: 0,
 			total: 0,
-			per: that.config.pages.per						
+			per: that.config.pagePer						
 		}
 
 		//render pages
-		that.renderPages( $('.' + that.config.cssSelectors.pages) );
+		that.renderPages( $('.' + that.config.classPages) );
 	},
 
 	changeItem: function(el){
 
 		var that = this,
-			loading = $('.' + that.config.cssSelectors.loadingImg),
+			loading = $('.' + that.config.classLoadingImg),
 			href,
 			thumbs;
 
 		//store thumbs
-		thumbs = $('.' + that.config.cssSelectors.thumbs).find('a');
+		thumbs = $('.' + that.config.classThumbs).find('a');
 
 		//remove active thumb class
-		thumbs.removeClass(that.config.cssSelectors.activeThumb);
+		thumbs.removeClass(that.config.classActiveThumb);
 
 		//add active thumb class to selected thumb
-		el.addClass(that.config.cssSelectors.activeThumb);
+		el.addClass(that.config.classActiveThumb);
 
 		//store href
 		href = el.attr('href');
@@ -264,13 +248,13 @@ var blurbGallery = {
 		that.findItem(href);
 
 		//render title
-		that.renderTitle( $('.' + that.config.cssSelectors.title) );
+		that.renderTitle( $('.' + that.config.classTitle) );
 
 		//render description
-		that.renderDescription( $('.' + that.config.cssSelectors.description) );
+		that.renderDescription( $('.' + that.config.classDescription) );
 
 		//render image
-		src = that.renderImage($('.' + that.config.cssSelectors.img));
+		src = that.renderImage($('.' + that.config.classImg));
 
 		//if loading image is set, show loading
 		if(that.config.loading) loading.show();
@@ -310,9 +294,8 @@ var blurbGallery = {
 				//assign current
 				pageId = that.pages.current;
 
-				//clear active and reassign
-				$('.' + that.config.cssSelectors.pages).children().removeClass(that.config.cssSelectors.activePage);
-				$('.' + that.config.cssSelectors.pageLink).eq(pageId).addClass(that.config.cssSelectors.activePage);
+				//render pages
+				that.renderPages($('.' + that.config.classPages));
 			}
 		}
 		//if next
@@ -331,9 +314,8 @@ var blurbGallery = {
 				//assign current
 				pageId = that.pages.current;
 
-				//clear active page and reassign
-				$('.' + that.config.cssSelectors.pages).children().removeClass(that.config.cssSelectors.activePage);
-				$('.' + that.config.cssSelectors.pageLink).eq(pageId).addClass(that.config.cssSelectors.activePage);	
+				//render pages
+				that.renderPages($('.' + that.config.classPages));					
 			}
 		}
 		//else page
@@ -348,21 +330,12 @@ var blurbGallery = {
 			start  = (that.pages.current * that.pages.per);
 			end    = (start + that.pages.per);
 
-			//clear active page and reassign
-			$('.' + that.config.cssSelectors.pages).children().removeClass(that.config.cssSelectors.activePage);
-			$('.' + that.config.cssSelectors.pageLink).eq(pageId).addClass(that.config.cssSelectors.activePage);
+			//render pages
+			that.renderPages($('.' + that.config.classPages));			
 		}
 
 		//sort
-		that.sortThumbs(start, end);			
-
-		//cache selectors
-		previousLink = $('.' + that.config.cssSelectors.previousLink);
-		nextLink = $('.' + that.config.cssSelectors.nextLink);
-
-		//adjust showing links
-		(that.pages.current === 0) ? previousLink.hide() : previousLink.show();
-		(that.pages.current === (that.pages.total - 1)) ? nextLink.hide() : nextLink.css('display', 'inline-block');
+		that.sortThumbs(start, end);
 	},
 
 	render: function(){
@@ -381,7 +354,7 @@ var blurbGallery = {
 
 		wrapper.attr({
 
-			'class': that.config.cssSelectors.wrapper
+			'class': that.config.classWrapper
 		});
 
 		//append wrapper to elem
@@ -409,12 +382,12 @@ var blurbGallery = {
 
 			selectMenu.attr({
 
-				'class': that.config.cssSelectors.selectMenu
+				'class': that.config.classSelectMenu
 			});
 
 			selectNav.attr({
 
-				'class': that.config.cssSelectors.selectNav
+				'class': that.config.classSelectNav
 			});
 
 			//for each cat
@@ -426,7 +399,7 @@ var blurbGallery = {
 					'alt': cats[i].id,
 					'href': '#',
 					'html': cats[i].id,
-					'title': cats[i].id,
+					'title': cats[i].id
 				});
 
 				//append anchor to nav
@@ -485,7 +458,7 @@ var blurbGallery = {
 					loadingImg.attr({
 
 						'alt': 'Loading...',
-						'class': that.config.cssSelectors.loadingImg,
+						'class': that.config.classLoadingImg,
 						'title': 'Loading...'
 					}).html('<img src="' + that.config.loading +'" />');
 
@@ -494,17 +467,17 @@ var blurbGallery = {
 
 				img.attr({
 
-					'class': that.config.cssSelectors.img
+					'class': that.config.classImg
 				});
 
 				imgCtn.attr({
 
-					'class': that.config.cssSelectors.imgCtn
+					'class': that.config.classImgCtn
 				});
 
 				enlarge.attr({
 
-					'class': that.config.cssSelectors.enlarge
+					'class': that.config.classEnlarge
 				})
 				.html('Click image to enlarge');
 
@@ -550,7 +523,7 @@ var blurbGallery = {
 
 					thumbs.attr({
 
-						'class': that.config.cssSelectors.thumbs
+						'class': that.config.classThumbs
 					});
 
 					//render thumbs
@@ -581,7 +554,7 @@ var blurbGallery = {
 
 					pages.attr({
 
-						'class': that.config.cssSelectors.pages
+						'class': that.config.classPages
 					});
 
 					//set pages
@@ -590,7 +563,7 @@ var blurbGallery = {
 						current: 0,
 						items: 0,
 						pages: 0,
-						per: that.config.pages.per						
+						per: that.config.pagePer						
 					}
 
 					//render pages
@@ -617,7 +590,7 @@ var blurbGallery = {
 
 				info.attr({
 
-					'class': that.config.cssSelectors.info
+					'class': that.config.classInfo
 				});
 
 				//render title
@@ -641,7 +614,7 @@ var blurbGallery = {
 				thumbs();
 
 				//if pages show is set to true, create pages
-				if(that.config.pages.show) pages();
+				if(that.config.pageShow) pages();
 
 				return dfd.promise();
 			};
@@ -657,7 +630,7 @@ var blurbGallery = {
 
 			gallery.attr({
 
-				'class': that.config.cssSelectors.gallery
+				'class': that.config.classGallery
 			});
 
 			//append gallery to wrapper
@@ -678,7 +651,7 @@ var blurbGallery = {
 				loading.attr({
 
 					'alt': 'Loading...',
-					'class': that.config.cssSelectors.loading,
+					'class': that.config.classLoading,
 					'title': 'Loading...'
 				}).html('<img src="' + that.config.loading +'" />');
 
@@ -723,7 +696,7 @@ var blurbGallery = {
 		title.attr({
 
 			'alt': that.selected.item.title,
-			'class': that.config.cssSelectors.title,
+			'class': that.config.classTitle,
 			'title': that.selected.item.title
 		})
 		.html(that.selected.item.title);
@@ -737,7 +710,7 @@ var blurbGallery = {
 		category.attr({
 
 			'alt': that.selected.cat.id,
-			'class': that.config.cssSelectors.category,
+			'class': that.config.classCategory,
 			'title': that.selected.cat.id
 		})
 		.html(that.selected.cat.id);
@@ -750,7 +723,7 @@ var blurbGallery = {
 		description.attr({
 
 			'alt': that.selected.item.info,
-			'class': that.config.cssSelectors.description,
+			'class': that.config.classDescription,
 			'title': that.selected.item.info
 		})
 		.html(that.selected.item.info);
@@ -768,13 +741,13 @@ var blurbGallery = {
 		image.empty();
 
 		//if full image path exists
-		if(that.config.path.full){
+		if(that.config.pathFull){
 
-			href = that.config.path.full + that.selected.item.img;
+			href = that.config.pathFull + that.selected.item.img;
 		}
 		else{
 
-			href = that.config.path.root + that.selected.item.img;
+			href = that.config.pathRoot + that.selected.item.img;
 		}
 
 		//create anchor
@@ -784,7 +757,7 @@ var blurbGallery = {
 		}).appendTo(image);
 
 		//create img source
-		src = that.config.path.root + that.selected.item.img;
+		src = that.config.pathRoot + that.selected.item.img;
 
 		//create img and append to a
 		el = $('<img/>',{
@@ -820,17 +793,17 @@ var blurbGallery = {
 			if(that.selected.item.img === that.selected.cat.item[i].img){
 
 				//add active class
-				a.addClass(that.config.cssSelectors.activeThumb);
+				a.addClass(that.config.classActiveThumb);
 			}
 
 			//if thumbs path exists
-			if(that.config.path.thumbs){
+			if(that.config.pathThumbs){
 
-				src = that.config.path.thumbs + that.selected.cat.item[i].img;
+				src = that.config.pathThumbs + that.selected.cat.item[i].img;
 			}
 			else{
 
-				src = that.config.path.root + that.selected.cat.item[i].img;
+				src = that.config.pathRoot + that.selected.cat.item[i].img;
 			}
 
 			//create img
@@ -867,6 +840,8 @@ var blurbGallery = {
 			var previousLink,
 				nextLink,
 				pageLink,
+				moreLink,
+				count,
 				i;
 
 			if(that.config.html5){
@@ -881,14 +856,14 @@ var blurbGallery = {
 
 			previousLink.attr({
 				'alt': 'Previous',
-				'class': that.config.cssSelectors.previousLink,
+				'class': that.config.classPreviousLink,
 				'title': 'Previous'
 			})
 			.html('<< Previous');
 
 			nextLink.attr({
 				'alt': 'next',
-				'class': that.config.cssSelectors.nextLink,
+				'class': that.config.classNextLink,
 				'title': 'next'
 			})
 			.html('Next >>');
@@ -896,8 +871,17 @@ var blurbGallery = {
 			//append previous link
 			that.pages.ctn.append(previousLink);
 
+			if(that.pages.total > that.config.pageMax){
+
+				count = that.pages.current;
+			}
+			else{
+
+				count = 0;
+			}
+
 			//create page links, append
-			for (i = 0; that.pages.total > i; ++i){
+			for (i = count; that.pages.total > i; ++i){
 
 				//create page link
 				if(that.config.html5){
@@ -905,7 +889,7 @@ var blurbGallery = {
 					pageLink = $('<section/>', {
 
 						'alt': 'Page ' + (i + 1),
-						'class': that.config.cssSelectors.pageLink,
+						'class': that.config.classPageLink,
 						'html': i + 1,
 						'id': i,
 						'title': 'Page ' + (i + 1)
@@ -916,7 +900,7 @@ var blurbGallery = {
 					pageLink = $('<div/>', {
 
 						'alt': 'Page ' + (i + 1),
-						'class': that.config.cssSelectors.pageLink,
+						'class': that.config.classPageLink,
 						'html': i + 1,
 						'id': i,
 						'title': 'Page ' + (i + 1)
@@ -924,10 +908,39 @@ var blurbGallery = {
 				}
 			
 				//make first page active
-				if(i === 0) pageLink.addClass(that.config.cssSelectors.activePage);
+				if(i === that.pages.current) pageLink.addClass(that.config.classActivePage);
 
 				//append page
 				that.pages.ctn.append(pageLink);
+
+				if(i + 1 === (that.config.pageMax + that.pages.current)){
+
+					//if more pages exist, create more link
+					if(i + 1 < that.pages.total){
+
+						//create more link
+						if(that.config.html5){
+
+							moreLink = $('<section/>', {
+
+								'html': '...',
+								'class': that.config.classMoreLink
+							});
+						}
+						else{
+
+							moreLink = $('<div/>', {
+								'html': '...',
+								'class': that.config.classMoreLink
+							});
+						}
+
+						//append moreLink
+						that.pages.ctn.append(moreLink);
+					}		
+
+					break;
+				}
 			};
 
 			//append next link
@@ -1003,13 +1016,13 @@ var blurbGallery = {
 				}
 			}
 			//elseif, look to config
-			else if(that.config.selected.cat){
+			else if(that.config.selectedCat){
 
 				//for each cat
 				for(i = 0, l = blurbGallery.length; i < l; ++i){
 
 					//if id equals cat in config
-					if(that.utils.formatText(blurbGallery[i].id) === that.utils.formatText(that.config.selected.cat)){
+					if(that.utils.formatText(blurbGallery[i].id) === that.utils.formatText(that.config.selectedCat)){
 
 						//set cat to cat
 						cat = blurbGallery[i];
@@ -1025,13 +1038,13 @@ var blurbGallery = {
 
 			var i;
 
-			if(that.config.selected.item && !item){
+			if(that.config.selectedItem && !item){
 
 				//for each item
 				for(i in cat.item){
 
 					//if id equals cat in config
-					if(that.utils.formatText(cat.item[i].id) === that.utils.formatText(that.config.selected.item)){
+					if(that.utils.formatText(cat.item[i].id) === that.utils.formatText(that.config.selectedItem)){
 
 						//set cat to cat
 						cat = cat.item[i];

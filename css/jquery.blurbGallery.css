@@ -128,6 +128,10 @@
 	float: left;
 	margin: 20px 0 0 0;
 	padding: 20px 0 0 0;
+	-moz-user-select: none;
+	-khtml-user-select: none;
+	-webkit-user-select: none;
+	user-select: none;		
 	width: 300px;
 }
 
@@ -163,12 +167,20 @@
 	width: 300px;
 }
 
-.bg-page-link, .bg-previous-link, .bg-next-link{
+.bg-page-link, .bg-previous-link, .bg-next-link, .bg-more-link{
 	color: #454545;
 	cursor: pointer;
 	font-weight: bold;
 	display: inline-block;
 	margin: 0 10px;
+	-moz-user-select: none;
+	-khtml-user-select: none;
+	-webkit-user-select: none;
+	user-select: none;		
+}
+
+.bg-more-link{
+	cursor: auto;
 }
 
 .bg-page-link:hover, .bg-previous-link:hover, .bg-next-link:hover{

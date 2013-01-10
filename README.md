@@ -6,7 +6,7 @@ blurbGallery dynamically generates a image gallery based on a JSON file that cat
 
 ### Release info:
 
-The current release is version 1.02. This is the inital release and more features and updates are planned.
+The current release is version 1.03. This is the inital release and more features and updates are planned.
 
 
 ### Examples:
@@ -16,13 +16,10 @@ Basic blurbGallery usuage on an empty element, the plugin will do the rest.
 
 	$('#element').blurbGallery();
 
-Add a JavaScript object to achieve additional functionality, some options are nested in objects.
+Add a JavaScript object to achieve additional functionality.
 
 	$('#element').blurbGallery({
 		html5: false,
-		pages: {
-			per: 8
-		},
 		speed: 1000
 	});
 
@@ -32,15 +29,23 @@ Add a JavaScript object to achieve additional functionality, some options are ne
 
 Here is a brief rundown of all the different options.
 
-**ajax**: Accepts object, controls Ajax config settings, for more information consult the jQuery API.
+**ajaxCache**: Accepts a boolean, controls whether to cache the Ajax request, for more information consult the jQuery API.
 
 	$('#element').blurbGallery({
-		ajax: {
-			cache: false,
-			dataType: 'json',
-			dataUrl: 'json/jquery.blurbGallery.json'
-		}
+		ajaxCache: false
 	});
+
+**ajaxDataType**: Accepts a string, controls the data type to be used by the Ajax request, for more information consult the jQuery API.
+
+	$('#element').blurbGallery({
+		ajaxDataType: 'json'
+	});
+
+**ajaxDataUrl**: Accepts a string, holds location of file to be used, for more information consult the jQuery API.
+
+	$('#element').blurbGallery({
+		ajaxDataUrl: 'json/jquery.items.json'
+	});	
 
 **callback**: Accepts a function, runs a function after the gallery has initally load, and additionally when the main image is loaded.
 
@@ -50,36 +55,55 @@ Here is a brief rundown of all the different options.
 		}
 	});
 
-**cssSelectors**: Accepts a object, holds all of the CSS selector names. Allows you to change the name of the classes for the gallery.
+**class Options**: Accepts a string, holds CSS class names. Allows you to change the name of the classes.
 
 	$('#element').blurbGallery({
-		cssSelectors: {
-			gallery: 'custom-class-gallery'
-		}
+		classActivePage: 'bg-active-page',
+		classActiveThumb: 'bg-active-thumb',
+		classCategory: 'bg-category',
+		classDescription: 'bg-description',
+		classEnlarge: 'bg-enlarge',
+		classGallery: 'bg-gallery',
+		classImg: 'bg-img',
+		classImgCtn: 'bg-img-ctn',
+		classInfo: 'bg-info',
+		classLoading: 'bg-loading',
+		classLoadingImg: 'bg-loading-img',
+		classMoreLink: 'bg-more-link',
+		classNextLink: 'bg-next-link',
+		classPageLink: 'bg-page-link',
+		classPages: 'bg-page-navigation',
+		classPreviousLink: 'bg-previous-link',
+		classSelectMenu: 'bg-select-menu',
+		classSelectNav: 'bg-select-nav',
+		classThumbs: 'bg-thumbs',
+		classTitle: 'bg-title',
+		classWrapper: 'bg-wrapper'
 	});
 
 List of renameable CSS selectors with their default values:
 
-	- activePage: 'bg-active-page'
-	- activeThumb: 'bg-active-thumb'
-	- category: 'bg-category'
-	- description: 'bg-description'
-	- enlarge: 'bg-enlarge'
-	- gallery: 'bg-gallery'
-	- img: 'bg-img'
-	- imgCtn: 'bg-img-ctn'
-	- info: 'bg-info'
-	- loading: 'bg-loading'
-	- loadingImg: 'bg-loading-img'
-	- nextLink: 'bg-next-link'
-	- pageLink: 'bg-page-link'
-	- pages: 'bg-page-navigation'
-	- previousLink: 'bg-previous-link'
-	- selectMenu: 'bg-select-menu'
-	- selectNav: 'bg-select-nav'
-	- thumbs: 'bg-thumbs'
-	- title: 'bg-title'
-	- wrapper: 'bg-wrapper'
+	- classActivePage: 'bg-active-page'
+	- classActiveThumb: 'bg-active-thumb'
+	- classCategory: 'bg-category'
+	- classDescription: 'bg-description'
+	- classEnlarge: 'bg-enlarge'
+	- classGallery: 'bg-gallery'
+	- classImg: 'bg-img'
+	- classImgCtn: 'bg-img-ctn'
+	- classInfo: 'bg-info'
+	- classLoading: 'bg-loading'
+	- classLoadingImg: 'bg-loading-img'
+	- classMoreLink: 'bg-more-link'
+	- classNextLink: 'bg-next-link'
+	- classPageLink: 'bg-page-link'
+	- classPages: 'bg-page-navigation'
+	- classPreviousLink: 'bg-previous-link'
+	- classSelectMenu: 'bg-select-menu'
+	- classSelectNav: 'bg-select-nav'
+	- classThumbs: 'bg-thumbs'
+	- classTitle: 'bg-title'
+	- classWrapper: 'bg-wrapper'
 
 **html5**: Accepts a boolean value, true creates articles/sections/nav elements, alternatively false creates divs, defaults to true.
 
@@ -93,45 +117,39 @@ List of renameable CSS selectors with their default values:
 		loading: 'img/bg-loading.gif'
 	});
 
-**pages**: Accepts a object, contains options for the pagination system, show controls if pages are used altogether, per controls how many items per page.
+**Page Options**: Accepts a number, contains options for the pagination system, pageShow controls if pages are used altogether, use a boolean.
 
 	$('#element').blurbGallery({
-		pages: {
-			show: true,
-			per: 3
-		}
+		pageMax: 3,
+		pagePer: 3,
+		pageShow: true
 	});
 
-**path**: Accepts a object, holds all of the paths for images. If full/thumb is set to false, it falls back to root path.
+List of adjustable options:
+
+	- pageMax: 3
+	- pagePer: 3
+	- pageShow: true
+
+**Path Options**: Accepts a string, holds all of the paths for images. If full/thumb is set to false, it falls back to root path.
 
 	$('#element').blurbGallery({
-		path: {
-			full: false,
-			root: 'img/',
-			thumbs: 'img/thumbs/'
-		}
+		pathFull: false,
+		pathRoot: 'img/',
+		pathThumbs: 'img/thumbs/'
 	});
 
-List of editable paths:
-
-	- full: false,
-	- root: 'img/'
-	- thumbs: 'img/thumbs/'
-
-**selected**: Accepts a object, contains the starting category and item loaded on the inital load of the gallery. Defaults to false.
+**Selected Options**: Accepts a boolean, contains the starting category and item loaded on the inital load of the gallery. Defaults to false.
 
 	$('#element').blurbGallery({
-		selected: {
-			cat: false,
-			item: false
-		}
+		selectedCat: false,
+		selectedItem: false
 	});
 
-**speed**: Accepts an object, controls the speed of the fade and load transitions in milliseconds.
+**speed**: Accepts a number, controls the speed of the animations.
 
 	$('#element').blurbGallery({
-		load: 300,
-		transition: 150
+		speed: 300
 	});
 
 ### Build Contents:
