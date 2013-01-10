@@ -1,7 +1,7 @@
 /*!
  * jQuery blurbGallery Plugin
  * Author: Carl Dawson
- * Version: 1.03
+ * Version: 1.04
  */
 
 var blurbGallery = {
@@ -263,6 +263,9 @@ var blurbGallery = {
 
 			//if loading image is set, hide loading
 			if(that.config.loading) loading.hide();
+
+			//fade in gallery
+			$('.' + that.config.classImgCtn).css('opacity', 0).animate({'opacity': 1}, that.config.speed);
 
 			//callback function
 			that.config.callback();			
