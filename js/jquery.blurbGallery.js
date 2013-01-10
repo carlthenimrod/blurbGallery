@@ -230,6 +230,7 @@ var blurbGallery = {
 		var that = this,
 			loading = $('.' + that.config.classLoadingImg),
 			href,
+			src,
 			thumbs;
 
 		//hide image container
