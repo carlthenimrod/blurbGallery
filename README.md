@@ -6,7 +6,7 @@ blurbGallery dynamically generates a image gallery based on a JSON file that cat
 
 ### Release info:
 
-The current release is version 1.04. This is the inital release and more features and updates are planned.
+The current release is version 1.05. This is the inital release and more features and updates are planned.
 
 
 ### Examples:
@@ -44,7 +44,7 @@ Here is a brief rundown of all the different options.
 **ajaxDataUrl**: Accepts a string, holds location of file to be used, for more information consult the jQuery API.
 
 	$('#element').blurbGallery({
-		ajaxDataUrl: 'json/jquery.items.json'
+		ajaxDataUrl: 'json/jquery.single.json'
 	});	
 
 **callback**: Accepts a function, runs a function after the gallery has initally load, and additionally when the main image is loaded.
@@ -115,6 +115,12 @@ List of renameable CSS selectors with their default values:
 
 	$('#element').blurbGallery({
 		loading: 'img/bg-loading.gif'
+	});
+
+**multiJSON**: Accepts a boolean, defaults to false which causes plugin to search for a single JSON file. If set to true, plugin searchs for multiple files that are linked by the inital JSON file. 
+
+	$('#element').blurbGallery({
+		multiJSON: false
 	});
 
 **Page Options**: Accepts a number, contains options for the pagination system, pageShow controls if pages are used altogether, use a boolean.

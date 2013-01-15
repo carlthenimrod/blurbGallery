@@ -1,7 +1,7 @@
 /*!
  * jQuery blurbGallery Plugin
  * Author: Carl Dawson
- * Version: 1.04
+ * Version: 1.05
  */
 
 var blurbGallery = {
@@ -39,7 +39,7 @@ var blurbGallery = {
 
 		ajaxCache: false,
 		ajaxDataType: 'json',
-		ajaxDataUrl: 'json/jquery.items.json',
+		ajaxDataUrl: 'json/jquery.single.json',
 		callback: function(){},
 		classActivePage: 'bg-active-page',
 		classActiveThumb: 'bg-active-thumb',
@@ -64,6 +64,7 @@ var blurbGallery = {
 		classWrapper: 'bg-wrapper',
 		html5: true,
 		loading: 'img/bg-loading.gif',
+		multiJSON: false,
 		pageMax: 3,
 		pagePer: 3,
 		pageShow: true,
@@ -93,11 +94,18 @@ var blurbGallery = {
 			//set data variable
 			that.data = data;
 
-			//find selected, try to get var
-			that.selected = that.findSelected(true);
+			//find selected
+			$.when(that.findSelected()).then(function(){
 
-			//resolve deferred
-			dfd.resolve();
+				that.selected = {
+
+					cat: that.selectedCat,
+					item: that.selectedItem
+				}
+
+				//resolve deferred
+				dfd.resolve();
+			});
 
 		}, function(){
 
@@ -112,16 +120,6 @@ var blurbGallery = {
 	events: function(){
 
 		var that = this;
-
-		//on nav click
-		that.$elem.on('click', '.' + that.config.classSelectNav + ' a', function(e){
-
-			//change cat
-			that.changeCategory.call(that, $(this).html());
-
-			//prevent default
-			e.preventDefault();
-		});
 
 		//on thumb click
 		that.$elem.on('click', '.' + that.config.classThumbs + ' a', function(e){
@@ -373,7 +371,7 @@ var blurbGallery = {
 
 			var selectMenu,
 				selectNav,
-				cats = that.data.items,
+				cats = that.categories,
 				a,
 				i,
 				l;
@@ -405,10 +403,10 @@ var blurbGallery = {
 				//create anchor element
 				a = $('<a/>', {
 
-					'alt': cats[i].id,
-					'href': '#',
-					'html': cats[i].id,
-					'title': cats[i].id
+					'alt': cats[i],
+					'href': '?cat=' + that.utils.formatText(cats[i]),
+					'html': cats[i],
+					'title': cats[i]
 				});
 
 				//append anchor to nav
@@ -964,111 +962,164 @@ var blurbGallery = {
 		}
 	},
 
-	findSelected: function(get){
+	findSelected: function(){
 
 		var that = this,
-			cat,
+			dfd = $.Deferred(),
+			cat = $('#bg-selected-cat').attr('value'),
+			img = $('#bg-selected-img').attr('value'),
+			categories,
 			item;
 
-		(function(){
+		//create empty cat array
+		that.categories = [];
 
-			var blurbGallery = that.data.items,
-				id,
-				i,
-				l,
-				selectedImg = $('#bg-selected-img').attr('value'),
-				selectedCat = $('#bg-selected-cat').attr('value');
+		if(that.config.multiJSON){
 
-			if(selectedImg && get){
+			categories = that.data.categories;
 
-				//for each cat
-				for(i = 0, l = blurbGallery.length; i < l; ++i){
+			//find cat
+			if(cat){
 
-					var currentCat = blurbGallery[i];
+				(function(){
 
-					(function(){
+					var i,
+						l;
 
-						var i,
-							l,
-							img;
+					for(i = 0, l = categories.length; i < l ; ++i){
 
-						for(i = 0, l = currentCat.item.length; i < l; ++i){
+						if(cat === that.utils.formatText(categories[i].id)){
 
-							img = that.utils.formatText(currentCat.item[i].title);
-
-							if(selectedImg === img){
-
-								item = currentCat.item[i];
-
-								cat = currentCat;
-							}
+							that.selectedCat = categories[i].id;
 						}
 
-					})();
-				}
+						that.categories.push(categories[i].id);
+					}
+
+				})();
 			}
-			//if selected cat, and get is set
-			else if(selectedCat && get){
+			else{
 
-				//for each cat
-				for(i = 0, l = blurbGallery.length; i < l; ++i){
+				for(i = 0, l = categories.length; i < l ; ++i){
 
-					//format id
-					id = that.utils.formatText(blurbGallery[i].id);
+					that.categories.push(categories[i].id);
+				}				
 
-					//if id equals cat in config
-					if(id === selectedCat){
+				that.selectedCat = categories[0].id;
+			}
 
-						//set cat to cat
-						cat = blurbGallery[i];
+			$.ajax({
+
+				//ajax config
+				cache: that.config.ajaxCache,
+				dataType: that.config.ajaxDataType,
+				url: 'json/' + that.utils.formatText(that.selectedCat) + '.json'
+
+			}).then(function(data){
+
+				var items = data.items.item,
+					i,
+					l;
+
+				//reset data var
+				that.selectedCat = data.items;
+
+				//find img
+				if(img){
+
+					for(i = 0, l = items.length; i < l; ++i){
+
+						if(img === that.utils.formatText(items[i].title)){
+
+							that.selectedItem = items[i];
+						}
 					}
 				}
-			}
-			//elseif, look to config
-			else if(that.config.selectedCat){
+				else{
 
-				//for each cat
-				for(i = 0, l = blurbGallery.length; i < l; ++i){
-
-					//if id equals cat in config
-					if(that.utils.formatText(blurbGallery[i].id) === that.utils.formatText(that.config.selectedCat)){
-
-						//set cat to cat
-						cat = blurbGallery[i];
-					}
+					that.selectedItem = items[0];
 				}
-			}
 
-			//if nothing is selected, select first element by default
-			if(!cat) cat = blurbGallery[0];
-		})();
-
-		(function(){
-
-			var i;
-
-			if(that.config.selectedItem && !item){
-
-				//for each item
-				for(i in cat.item){
-
-					//if id equals cat in config
-					if(that.utils.formatText(cat.item[i].id) === that.utils.formatText(that.config.selectedItem)){
-
-						//set cat to cat
-						cat = cat.item[i];
-					}
-				}
-			}
-
-			//if nothing is selected, select first element by default
-			if(!item) item = cat.item[0];
-		})();	
-
-		return{
-			cat: cat,
-			item: item
+				//resolve deferred
+				dfd.resolve();
+			});
 		}
+		else{
+
+			(function(){
+
+				var blurbGallery = that.data.items,
+					id,
+					i,
+					l;
+
+				//if nothing is selected, select first element by default
+				if(cat){
+
+					//for each cat
+					for(i = 0, l = blurbGallery.length; i < l; ++i){
+
+						//add to cat array
+						that.categories.push(blurbGallery[i].id);
+
+						var currentCat = blurbGallery[i];
+
+						if(cat === that.utils.formatText(blurbGallery[i].id)){
+
+							that.selectedCat = currentCat;
+						}
+					}
+
+				}
+				else{
+
+					that.selectedCat = blurbGallery[0];
+
+					//for each cat
+					for(i = 0, l = blurbGallery.length; i < l; ++i){
+
+						//add to cat array
+						that.categories.push(blurbGallery[i].id);
+					}
+				}
+
+				if(img){
+
+					//for each cat
+					for(i = 0, l = blurbGallery.length; i < l; ++i){
+
+						var currentCat = blurbGallery[i];
+
+						(function(){
+
+							var i,
+								l,
+								currentImg;
+
+							for(i = 0, l = currentCat.item.length; i < l; ++i){
+
+								currentImg = that.utils.formatText(currentCat.item[i].title);
+								
+								if(img === currentImg){
+
+									that.selectedItem = currentCat.item[i];
+								}
+							}
+
+						})();
+					}
+				}
+				else{
+
+					that.selectedItem = blurbGallery[0].item[0];
+				}
+
+				//resolve
+				dfd.resolve();
+			})();
+		}
+
+		return dfd.promise();
 	},
 
 	findItem: function(img){
