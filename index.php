@@ -13,7 +13,6 @@
 <body>
 	<div id="element"></div> <!-- #elment -->
 
-	<input type="hidden" id="bg-selected-img" value="<?php if ( isset($_GET['img']) ) echo $_GET['img']; ?>" /> <!-- #bg-selected-img -->
-	<input type="hidden" id="bg-selected-cat" value="<?php if ( isset($_GET['cat']) ) echo $_GET['cat']; ?>" /> <!-- #bg-selected-cat -->
+	<input type="hidden" id="bg-selected-img" value="<?php if ( isset($_GET['img']) ) echo htmlentities($_GET['img'], ENT_QUOTES); ?>" /> <!-- #bg-selected-img -->
+	<input type="hidden" id="bg-selected-cat" value="<?php if ( isset($_GET['cat']) ) echo htmlentities($_GET['cat'], ENT_QUOTES); ?>" /> <!-- #bg-selected-cat -->
 </body>
-</html>
