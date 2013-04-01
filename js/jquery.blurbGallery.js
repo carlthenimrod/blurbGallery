@@ -25,6 +25,9 @@ var blurbGallery = {
 
 			//create events
 			that.events();
+
+			//format
+			that.format();
 		},
 		function(){
 
@@ -159,7 +162,14 @@ var blurbGallery = {
 
 			//prevent default
 			e.preventDefault();
-		});							
+		});
+
+		//on window resize
+		$(window).on('resize', function(){
+
+			//format gallery
+			that.format();
+		});				
 	},
 
 	changeCategory: function(id){
@@ -1159,6 +1169,31 @@ var blurbGallery = {
 
 		//slice/show thumbs
 		thumbs.slice(start, end).show();
+	},
+
+	format: function(){
+
+		var that = this,
+			width,
+			ctn,
+			thumbs,
+			pages,
+			position = 'bottom';
+
+		width = $(window).width();
+
+		if((width <= 780) && (position = 'bottom')){
+
+			$('.' + that.config.classInfo).prepend($('.' + that.config.classThumbs), $('.' + that.config.classPages));
+
+			position = 'top';
+		}
+		else if((width > 780) && (position = 'top')){
+
+			$('.' + that.config.classInfo).append($('.' + that.config.classThumbs), $('.' + that.config.classPages));
+
+			position = 'bottom';
+		}
 	},
 
 	utils: {
